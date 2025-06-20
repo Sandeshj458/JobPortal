@@ -17,6 +17,7 @@ import UpdateJobForm from './components/admin/UpdateJobForm'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import { Toaster } from 'react-hot-toast';
 import Help from './components/Help'
+import ForgotPassword from './components/ForgotPassword'
 
 const appRouter = createBrowserRouter([
   // Client / User side
@@ -83,7 +84,12 @@ const appRouter = createBrowserRouter([
    {
     path: '/help',
     element: <Help />
-  }
+  },
+
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />
+  },
 ])
 
 function App() {
