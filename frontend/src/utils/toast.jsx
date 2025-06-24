@@ -24,22 +24,6 @@ const errorIcon = (
   </svg>
 );
 
-// export const showSuccessToast = (message) => {
-//   toast.success(message, {
-//     icon: successIcon,
-//     className:
-//       "bg-success-bg text-success-text font-semibold shadow-lg rounded-md border border-success-border",
-//   });
-// };
-
-// export const showErrorToast = (message) => {
-//   toast.error(message, {
-//     icon: errorIcon,
-//     className:
-//       "bg-error-bg text-error-text font-semibold shadow-lg rounded-md border border-error-border",
-//   });
-// };
-
 export const showSuccessToast = (message) => {
   toast.success(message, {
     icon: successIcon,

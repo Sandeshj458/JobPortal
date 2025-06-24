@@ -25,16 +25,15 @@ import {
 } from '@/components/ui/dialog';
 
 import { Button } from '@/components/ui/button';
-import toast from 'react-hot-toast';
-
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
 
-
 const AdminJobsTable = () => {
-
   const [deleteJobId, setDeleteJobId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
+  const [filterJobs, setFilterJobs] = useState(allAdminJobs);
+  const navigate = useNavigate();
 
   const formatDate = (isoDate) => {
     if (!isoDate) return '';
@@ -42,47 +41,13 @@ const AdminJobsTable = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
-  const [filterJobs, setFilterJobs] = useState(allAdminJobs);
-  const navigate = useNavigate();
-
-    useEffect(() => {
-      const message = localStorage.getItem('JobDeleteSuccess');
-      if (message) {
-        showSuccessToast(message);
-        localStorage.removeItem('JobDeleteSuccess');
-      }
-    }, []);
-
-  // const handleDelete = async (jobId) => {
-  //   if (window.confirm("Are you sure you want to delete this job?")) {
-  //     try {
-  //       const response = await fetch(`${JOB_API_END_POINT}/delete/${jobId}`, {
-  //         method: 'DELETE',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Accept': 'application/json',
-  //         }, 
-  //         credentials: 'include', // ✅ Include cookies
-  //       });
-
-  //       console.log(jobId);
-
-  //       const data = await response.json();
-
-  //       if (response.ok) {
-  //         alert(data.message || 'Job deleted successfully');
-  //         window.location.reload(); // You could also remove from state for better UX
-  //       } else {
-  //         alert(data.message || 'Failed to delete job');
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //       alert('Something went wrong while deleting the job.');
-  //     }
-  //   }
-  // };
-
+  useEffect(() => {
+    const message = localStorage.getItem('JobDeleteSuccess');
+    if (message) {
+      showSuccessToast(message);
+      localStorage.removeItem('JobDeleteSuccess');
+    }
+  }, []);
 
   const handleDeleteJob = async () => {
     try {
@@ -92,18 +57,15 @@ const AdminJobsTable = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        credentials: 'include', // ✅ Include cookies
+        credentials: 'include',
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setIsDialogOpen(false);
-
         localStorage.setItem('JobDeleteSuccess', data?.message || 'Job deleted successfully');
-
-        window.location.reload(); // Or update state to remove the job from the list
-        // showSuccessToast(data.message || 'Job deleted successfully');
+        window.location.reload();
       } else {
         showErrorToast(data.message || 'Failed to delete job');
       }
@@ -113,71 +75,17 @@ const AdminJobsTable = () => {
     }
   };
 
-
   useEffect(() => {
-    const filteredJobs = allAdminJobs.length >= 0 && allAdminJobs.filter((job) => {
-      if (!searchJobByText) {
-        return true
-      };
-      return job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) || job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase());
+    const filteredJobs = allAdminJobs.filter((job) => {
+      if (!searchJobByText) return true;
+      return (
+        job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
+        job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase())
+      );
     });
-
     setFilterJobs(filteredJobs);
-  }, [allAdminJobs, searchJobByText])
-  // return (
-  //     <div>
-  //         <Table>
-  //             <TableCaption>A list of your recently posted jobs</TableCaption>
-  //             <TableHeader>
-  //                 <TableRow>
-  //                     <TableHead>Company Name</TableHead>
-  //                     <TableHead>Role</TableHead>
-  //                     <TableHead>Date</TableHead>
-  //                     <TableHead className="text-right">Action</TableHead>
-  //                 </TableRow>
-  //             </TableHeader>
+  }, [allAdminJobs, searchJobByText]);
 
-  //             <TableBody>
-  //                 {
-  //                     filterJobs.length === 0 ? (
-  //                         <TableRow>
-  //                             <TableCell colSpan={4} className="text-center">
-  //                                 You haven't posted any jobs yet.
-  //                             </TableCell>
-  //                         </TableRow>
-  //                     ) : (
-
-  //                         filterJobs?.map((job) => (
-  //                             <TableRow key={job._id}>
-  //                                 {/*  <TableRow> */}
-  //                                 <TableCell>{job?.company?.name}</TableCell>
-  //                                 <TableCell>{job?.title}</TableCell>
-  //                                 <TableCell>{job?.company?.createdAt?.split('T')[0]}</TableCell>
-  //                                 <TableCell className="text-right">
-  //                                     <Popover>
-  //                                         <PopoverTrigger className="cursor-pointer">
-  //                                             <MoreHorizontal />
-  //                                         </PopoverTrigger>
-  //                                         <PopoverContent className="w-32">
-  //                                             <div
-  //                                                 onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-  //                                                 className='flex items-center w-fit gap-2 cursor-pointer mt-2'>
-
-  //                                                 <Eye className='w-4' />
-  //                                                 <span>Applicants</span>
-  //                                             </div>
-  //                                         </PopoverContent>
-  //                                     </Popover>
-  //                                 </TableCell>
-  //                             </TableRow>
-  //                         ))
-  //                     )
-  //                 }
-  //             </TableBody>
-
-  //         </Table>
-  //     </div>
-  // );
   return (
     <div className="max-w-5xl mx-auto my-10 p-6 bg-white shadow-lg rounded-xl border">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">Posted Jobs</h2>
@@ -199,20 +107,15 @@ const AdminJobsTable = () => {
         <TableBody>
           {filterJobs.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center py-6 text-gray-500">
+              <TableCell colSpan={6} className="text-center py-6 text-gray-500">
                 You haven't posted any jobs yet.
               </TableCell>
             </TableRow>
           ) : (
             filterJobs.map((job) => (
-              <TableRow
-                key={job._id}
-                className="hover:bg-gray-50 transition-colors duration-200"
-              >
+              <TableRow key={job._id} className="hover:bg-gray-50 transition-colors duration-200">
                 <TableCell className="py-3">{job?.company?.name}</TableCell>
                 <TableCell className="py-3">{job?.title}</TableCell>
-                {/* <TableCell className="py-3">{job?.createdAt?.split('T')[0]}</TableCell>
-                <TableCell className="py-3">{job?.expiredDate?.split('T')[0]}</TableCell> */}
                 <TableCell className="py-3">{formatDate(job?.createdAt)}</TableCell>
                 <TableCell className="py-3">{formatDate(job?.expiredDate)}</TableCell>
 
@@ -228,30 +131,42 @@ const AdminJobsTable = () => {
                   )}
                 </TableCell>
 
-
                 <TableCell className="text-right py-3">
                   <Popover>
                     <PopoverTrigger className="cursor-pointer text-gray-600 hover:text-black">
                       <MoreHorizontal />
                     </PopoverTrigger>
-                    {/* <PopoverContent className="w-36">
-                      <div
-                        onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-                        className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 cursor-pointer transition"
-                      >
-                        <Eye className="w-4 h-4 text-gray-600" />
-                        <span className="text-sm text-gray-700">Applicants</span>
-                      </div>
-                    </PopoverContent> */}
                     <PopoverContent className="w-36">
-                      <div
-                        onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-                        className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 cursor-pointer transition"
-                      >
-                        <Eye className="w-4 h-4 text-gray-600" />
-                        <span className="text-sm text-gray-700">Applicants</span>
-                      </div>
 
+                      {/* Screening Type Options */}
+                      {job.screeningType === 'Manual' ? (
+                        <div
+                          onClick={() =>
+                            navigate(`/admin/jobs/${job._id}/applicants?screeningType=Manual`)
+                          }
+                          className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 cursor-pointer transition"
+                        >
+                          <Eye className="w-4 h-4 text-gray-600" />
+                          <span className="text-sm text-gray-700">Manual Screening</span>
+                        </div>
+                      ) : job.screeningType === 'ATS' ? (
+                        <div
+                          onClick={() =>
+                            navigate(`/admin/jobs/${job._id}/applicants?screeningType=ATS`)
+                          }
+                          className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 cursor-pointer transition"
+                        >
+                          <Eye className="w-4 h-4 text-gray-600" />
+                          <span className="text-sm text-gray-700">ATS Screening</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 p-2 rounded text-red-500 cursor-not-allowed">
+                          <Eye className="w-4 h-4 text-gray-400" />
+                          <span className="text-sm">No Screening Type</span>
+                        </div>
+                      )}
+
+                      {/* Edit Option */}
                       <div
                         onClick={() => navigate(`/admin/jobs/edit/${job._id}`)}
                         className="flex items-center gap-2 p-2 rounded hover:bg-gray-100 cursor-pointer transition"
@@ -260,14 +175,7 @@ const AdminJobsTable = () => {
                         <span className="text-sm text-blue-700">Edit</span>
                       </div>
 
-                      {/* <div
-                        onClick={() => handleDelete(job._id)}
-                        className="flex items-center gap-2 p-2 rounded hover:bg-red-50 cursor-pointer transition"
-                      >
-                        <Trash2 className="w-4 h-4 text-red-600" />
-                        <span className="text-sm text-red-600">Delete</span>
-                      </div> */}
-
+                      {/* Delete Option */}
                       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogTrigger asChild>
                           <div
@@ -281,7 +189,6 @@ const AdminJobsTable = () => {
                             <span className="text-sm text-red-600">Delete</span>
                           </div>
                         </DialogTrigger>
-
                         <DialogContent className="sm:max-w-md">
                           <DialogHeader>
                             <DialogTitle>Confirm Deletion</DialogTitle>
@@ -293,14 +200,13 @@ const AdminJobsTable = () => {
                             <DialogClose asChild>
                               <Button variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button variant="destructive" onClick={handleDeleteJob}>Delete</Button>
+                            <Button variant="destructive" onClick={handleDeleteJob}>
+                              Delete
+                            </Button>
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
-
-
                     </PopoverContent>
-
                   </Popover>
                 </TableCell>
               </TableRow>
@@ -310,7 +216,6 @@ const AdminJobsTable = () => {
       </Table>
     </div>
   );
-
 };
 
 export default AdminJobsTable;

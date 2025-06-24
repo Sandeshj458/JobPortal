@@ -16,6 +16,21 @@ const jobSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    education: {
+      type: [String],
+      required: true,
+    },
+    screeningType: {
+      type: String,
+      enum: ["ATS", "Manual"],
+      required: true,
+    },
+    keywords: [
+      {
+        type: String,
+      },
+    ],
+
     salary: {
       type: String,
       required: true,
@@ -63,5 +78,14 @@ const jobSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Pre-save hook to remove `keywords` if screeningType is Manual
+jobSchema.pre("save", function (next) {
+  if (this.screeningType === "Manual") {
+    this.keywords = undefined;
+  }
+  next();
+});
+
 
 export const Job = mongoose.model("Job", jobSchema);

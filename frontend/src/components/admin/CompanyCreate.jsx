@@ -27,7 +27,6 @@ const CompanyCreate = () => {
             })
             if (res?.data?.success) {
                 dispatch(setSingleCompany(res.data.company));
-                // toast.success(res.data.message);
                 showSuccessToast(res.data.message);
 
                 const companyId = res?.data?.company?._id;
@@ -36,10 +35,8 @@ const CompanyCreate = () => {
         } catch (error) {
             console.log(error);
             if (error.response?.data?.message) {
-                // toast.error(error.response.data.message); // like "You can't register same company."
                 showErrorToast(error.response.data.message);
             } else {
-                // toast.error("Something went wrong while registering the company.");
                 showErrorToast("Something went wrong while registering the company.");
             }
         }

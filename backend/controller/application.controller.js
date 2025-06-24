@@ -2,12 +2,42 @@ import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
 import sendEmail from "../utils/send-email.js"; // Adjust import if needed
 import { User } from "../models/user.model.js"; // Assuming you have User model to fetch user info
+import axios from "axios";
+import textract from "textract";
+
+// 🧠 Helper: extract plain text from PDF resume
+const getResumeText = async (resumeUrl) => {
+  const response = await axios.get(resumeUrl, { responseType: "arraybuffer" });
+  const pdfBuffer = Buffer.from(response.data); // ensure it's a proper Node.js buffer
+
+  return new Promise((resolve, reject) => {
+    textract.fromBufferWithMime("application/pdf", pdfBuffer, (err, text) => {
+      if (err) {
+        console.error("Textract error:", err);
+        return reject("Failed to extract resume text.");
+      }
+      resolve(text);
+    });
+  });
+};
+
+// 🧠 Helper: calculate ATS score by matching job keywords with resume content
+const calculateATSScore = (resumeText, jobKeywords = []) => {
+  if (jobKeywords.length === 0) return 0;
+  let matchCount = 0;
+  for (let keyword of jobKeywords) {
+    if (resumeText.toLowerCase().includes(keyword.toLowerCase())) {
+      matchCount++;
+    }
+  }
+  return Math.floor((matchCount / jobKeywords.length) * 100); // return score out of 100
+};
 
 export const applyJob = async (req, res) => {
   try {
-    const userId = req.id;
-
+    const userId = req.id; // get current user ID from auth middleware
     const jobId = req.params.id;
+
     if (!jobId) {
       return res.status(400).json({
         message: "Job id is required.",
@@ -15,20 +45,20 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    // check if the user has already applied for the job
-    const existingAppication = await Application.findOne({
+    // ❌ Prevent duplicate application
+    const existingApp = await Application.findOne({
       job: jobId,
       applicant: userId,
     });
 
-    if (existingAppication) {
+    if (existingApp) {
       return res.status(400).json({
-        message: "You have already applied for this jobs",
+        message: "You have already applied for this job.",
         success: false,
       });
     }
 
-    // check if the jobs exists
+    // ✅ Check if job exists
     const job = await Job.findById(jobId);
     if (!job) {
       return res.status(404).json({
@@ -37,41 +67,131 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    // create a new application
-    const newApplication = await Application.create({
+    // ✅ Get applicant
+    const applicant = await User.findById(userId);
+    if (!applicant) {
+      return res.status(404).json({
+        message: "Applicant not found",
+        success: false,
+      });
+    }
+
+    // ✅ Extract resume & keywords
+    const resumeUrl = applicant?.profile?.resume;
+    const jobKeywords = job?.keywords || [];
+
+    // ✅ Calculate ATS score
+    let atsScore = 0;
+    if (resumeUrl && job.screeningType === "ATS") {
+      const resumeText = await getResumeText(resumeUrl); // extract text
+      atsScore = calculateATSScore(resumeText, jobKeywords); // compare with keywords
+    }
+
+    const applicationData = {
       job: jobId,
       applicant: userId,
-    });
+    };
+    if (job.screeningType === "ATS") {
+      applicationData.atsScore = atsScore;
+    }
 
-    // application array created inside job.model.js
-    job.applications.push(newApplication._id);
+    const newApplication = await Application.create(applicationData);
+
+    
+
+    job.applications.push(newApplication._id); // store in job list
     await job.save();
 
-    // Fetch user email and fullname for email notification
-    const user = await User.findById(userId);
-    if (user?.email) {
+    // ✅ Email to Applicant
+    if (applicant?.email) {
       await sendEmail(
-        user.email,
-        "🎯 Application Received - " + job.title,
+        applicant.email,
+        `🎯 Application Received - ${job.title}`,
         `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2 style="color: #4CAF50;">Hi ${user.fullname},</h2>
-          <p>🎉 You've successfully applied for the position of <strong style="color:#1976d2;">${job.title}</strong>.</p>
-          <p>We truly appreciate your interest in this opportunity. Our team will review your profile and get back to you soon.</p>
-          <p style="margin-top: 20px;">Stay tuned and good luck! 🍀</p>
-          <hr style="margin: 30px 0;" />
-          <p style="font-size: 14px; color: #777;">This is an automated confirmation from Job Portal.</p>
+        <div style="max-width:600px;margin:auto;border:1px solid #e0e0e0;border-radius:10px;font-family:'Segoe UI',Roboto,Arial,sans-serif;background-color:#ffffff;">
+          <div style="background-color:#4CAF50;color:#fff;padding:20px;text-align:center;">
+            <h2 style="margin:0;">✅ Application Submitted Successfully</h2>
+          </div>
+          <div style="padding:20px;color:#333;">
+            <p>Hi <strong>${applicant.fullname}</strong>,</p>
+            <p>Thank you for applying for <strong>${
+              job.title
+            }</strong> at <strong>${
+          job.companyName || "our organization"
+        }</strong>.</p>
+            <p>Your ATS score: <strong>${atsScore}/100</strong></p>
+            <p>We’ll be in touch if you match our requirements.</p>
+            <p>Location: ${job.location}<br/>Job Type: ${
+          job.jobType
+        }<br/>Salary: ${job.salary}</p>
+            <div style="text-align:center;margin:30px 0;">
+              <a href="https://yourjobportal.com" style="background-color:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">
+                Visit Job Portal
+              </a>
+            </div>
+          </div>
+          <div style="background-color:#f9f9f9;padding:15px;text-align:center;font-size:13px;color:#888;">
+            This is an automated confirmation from Job Portal.
+          </div>
         </div>
         `
       );
     }
 
+    // ✅ Email to Recruiter
+    const recruiter = await User.findById(job.created_by);
+    if (recruiter?.email) {
+      const resumeLink = applicant?.profile?.resume || "Not uploaded";
+      const skills = applicant?.profile?.skills?.join(", ") || "Not specified";
+
+      await sendEmail(
+        recruiter.email,
+        `📥 New Application for ${job.title}`,
+        `
+        <div style="max-width:600px;margin:auto;border:1px solid #e0e0e0;border-radius:10px;font-family:'Segoe UI',Roboto,Arial,sans-serif;background-color:#ffffff;">
+          <div style="background-color:#0B5ED7;color:#fff;padding:20px;text-align:center;">
+            <h2 style="margin:0;">📨 New Application Received</h2>
+          </div>
+          <div style="padding:20px;color:#333;">
+            <p>Hello <strong>${recruiter.fullname}</strong>,</p>
+            <p><strong>${applicant.fullname}</strong> applied for <strong>${
+          job.title
+        }</strong>.</p>
+            <p>ATS Score: <strong>${atsScore}/100</strong></p>
+            <p>Email: ${applicant.email}<br/>Phone: ${
+          applicant.phoneNumber || "N/A"
+        }<br/>Skills: ${skills}</p>
+            <p>Resume: ${
+              resumeLink !== "Not uploaded"
+                ? `<a href="${resumeLink}" target="_blank">View Resume</a>`
+                : "Not uploaded"
+            }</p>
+            <div style="text-align:center;margin:30px 0;">
+              <a href="https://yourjobportal.com/recruiter/dashboard" style="background-color:#0B5ED7;color:#fff;padding:12px 24px;text-decoration:none;border-radius:5px;">
+                🔍 View Application
+              </a>
+            </div>
+          </div>
+          <div style="background-color:#f0f0f0;padding:15px;text-align:center;font-size:13px;color:#888;">
+            This is an automated message from Job Portal.
+          </div>
+        </div>
+        `
+      );
+    }
+
+    // ✅ Final response
     return res.status(201).json({
-      message: "Job applied successfully & email sent..",
+      message: "Job applied successfully. Emails sent.",
+      atsScore,
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Apply Job Error:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
   }
 };
 
@@ -146,14 +266,6 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    // find the application by application id
-    // const application = await Application.findOne({ _id: applicationId });
-    // if (!application) {
-    //   return res.status(404).json({
-    //     message: "Application not found.",
-    //     success: false,
-    //   });
-    // }
     const application = await Application.findById(applicationId).populate(
       "applicant job"
     );
@@ -172,18 +284,6 @@ export const updateStatus = async (req, res) => {
     const user = application.applicant;
     const jobTitle = application.job?.title || "the job";
 
-    // if (user?.email) {
-    //   await sendEmail(
-    //     user.email,
-    //     "📢 Application Status Updated",
-    //     `<p>Hi ${user.fullname},</p>
-    //      <p>Your application status for the job <strong>"${jobTitle}"</strong> has been updated to:</p>
-    //      <h3 style="color: #1976d2;">${application.status.toUpperCase()}</h3>
-    //      <p>Thank you for your interest in this position. We will keep you updated.</p>
-    //      <br/>
-    //      <p>Best regards,<br/>Job Portal Team</p>`
-    //   );
-    // }
 
     if (user?.email) {
       await sendEmail(

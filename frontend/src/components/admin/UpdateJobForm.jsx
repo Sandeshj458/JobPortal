@@ -28,9 +28,9 @@ import { setAllJobs } from '@/redux/jobSlice';
 const UpdateJobForm = () => {
 
     useGetCompanyById(); // ✅ fetches and sets companies in Redux
- 
+
     const dispatch = useDispatch(); // ✅ (Line 27) Initialized useDispatch
-   
+
     // const { jobId } = useParams(); // get jobId from route params
     const params = useParams();
     const jobId = params.id;
@@ -48,14 +48,15 @@ const UpdateJobForm = () => {
         experience: "",
         position: 0,
         companyId: "",
-        expiredDate: ""
+        expiredDate: "",
+        education: "",
     });
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
     const navigate = useNavigate();
     const { companies } = useSelector(store => store.company);
 
-    console.log("Current input state:", input);
+    // console.log("Current input state:", input);
 
 
     useEffect(() => {
@@ -68,9 +69,9 @@ const UpdateJobForm = () => {
                 });
                 if (res.data.success) {
                     const job = res.data.job;
-                    console.log("Fetched job", job);
-                    console.log("Job experience raw:", job.experience);
-                    console.log("Job experience type:", typeof job.experience);
+                    // console.log("Fetched job", job);
+                    // console.log("Job experience raw:", job.experience);
+                    // console.log("Job experience type:", typeof job.experience);
 
 
                     // Parse salary to extract numeric value, unit, and duration
@@ -91,7 +92,10 @@ const UpdateJobForm = () => {
                         experience: job.experienceLevel?.toString() || "",
                         position: job.position || 0,
                         companyId: job.company || "",
-                        expiredDate: job.expiredDate ? job.expiredDate.split('T')[0] : ""
+                        expiredDate: job.expiredDate ? job.expiredDate.split('T')[0] : "",
+                        //  education: job.education || "",
+                        education: Array.isArray(job.education) ? job.education.join(", ") : (job.education || ""),
+
                     });
                 } else {
                     showErrorToast("Failed to fetch job data");
@@ -128,17 +132,29 @@ const UpdateJobForm = () => {
             ...input,
             title: input.title.trim(),
             description: input.description.trim(),
-            requirements: input.requirements.trim(),
+            // requirements: input.requirements.trim(),
+            requirements: typeof input.requirements === 'string'
+                ? input.requirements.split(',').map(item => item.trim()).filter(item => item)
+                : [],
+
             salary: input.salary.trim(),
             location: input.location.trim(),
             jobType: input.jobType.trim(),
             experience: input.experience.trim(),
             expiredDate: input.expiredDate.trim(),
+            //  education: input.education.trim(),
+            education: typeof input.education === 'string'
+                ? input.education
+                    .split(',')
+                    .map(item => item.trim())
+                    .filter(item => item) // remove empty strings
+                : [],
+
         };
 
         if (!trimmedInput.title || !trimmedInput.description || !trimmedInput.requirements ||
             !trimmedInput.salary || !trimmedInput.location || !trimmedInput.jobType ||
-            !trimmedInput.experience || !trimmedInput.position || !trimmedInput.companyId || !trimmedInput.expiredDate) {
+            !trimmedInput.experience || !trimmedInput.position || !trimmedInput.companyId || !trimmedInput.expiredDate || !trimmedInput.education) {
             showErrorToast("Please fill in all required fields.");
             setLoading(false);
             return;
@@ -193,7 +209,7 @@ const UpdateJobForm = () => {
 
             if (res.data.success) {
                 showSuccessToast(res.data.message);
-                
+
                 // ✅ (Line ~175) Replace fetchAllJobs with manual dispatch using setAllJobs
                 const allJobsRes = await axios.get(`${JOB_API_END_POINT}/get`, {
                     withCredentials: true,
@@ -234,7 +250,10 @@ const UpdateJobForm = () => {
                         <div className="mb-4">
                             <Label>Requirements</Label>
                             <Input type="text" name="requirements" value={input.requirements} onChange={changeEventHandler} required />
-
+                        </div>
+                        <div className="mb-4">
+                            <Label>Education</Label>
+                            <Input type="text" name="education" value={input.education} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Salary</Label>

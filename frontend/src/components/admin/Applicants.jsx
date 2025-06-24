@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Navbar from '../shared/Navbar'
 import ApplicantsTable from './ApplicantsTable'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { APPLICATION_API_END_POINT } from '@/utils/constant'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +12,10 @@ const Applicants = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // ✅
+  const searchParams = new URLSearchParams(location.search); // ✅
+  const screeningType = searchParams.get('screeningType'); // ✅
+
   const { applicants } = useSelector(store => store.application)
 
   useEffect(() => {
@@ -22,7 +26,7 @@ const Applicants = () => {
             withCredentials: true
           });
 
-        console.log(res.data);
+        // console.log(res.data);
 
         dispatch(setAllApplicants(res.data.job));
 
@@ -31,7 +35,7 @@ const Applicants = () => {
       }
     }
     fetchAllApplicants();
-  }, []);
+  }, [params.id]);
 
   return (
     <div>
@@ -53,13 +57,13 @@ const Applicants = () => {
           </svg>
           Back
         </button>
-        {/* <h1 className='font-bold text-xl my-5'>Applicants {applicants?.applications?.length}</h1>
-        <ApplicantsTable /> */}
+       
         <div className="max-w-5xl mx-auto my-10 p-6 bg-white shadow-lg rounded-xl border">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            Applicants ({applicants?.applications?.length || 0})
+            {/* Applicants ({applicants?.applications?.length || 0}) */}
+            Applicants ({applicants?.applications?.length || 0}) - {screeningType} Screening
           </h2>
-          <ApplicantsTable />
+          <ApplicantsTable screeningType={screeningType} />
         </div>
       </div>
     </div>

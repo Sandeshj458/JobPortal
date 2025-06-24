@@ -151,10 +151,7 @@ const ForgotPassword = () => {
                                 />
                                 <CircularCountdown duration={120} timeLeft={timeLeft} />
                             </div>
-                            {timerExpired && (
-                                // <Button type="button" onClick={handleSendOtp} className="mt-4 w-full">
-                                //     Resend OTP
-                                // </Button>
+                            {timerExpired && (                               
                                 <Button type="button" onClick={handleSendOtp} className="mt-4 w-full" disabled={loading}>
                                     {loading ? (
                                         <span className="flex items-center justify-center">
@@ -183,10 +180,7 @@ const ForgotPassword = () => {
                         </div>
                     )}
 
-                    {!otpSent ? (
-                        // <Button type="button" className="w-full mt-4" onClick={handleSendOtp}>
-                        //     Send OTP
-                        // </Button>
+                    {!otpSent ? (                      
                         <Button type="button" className="w-full mt-4" onClick={handleSendOtp} disabled={loading}>
                             {loading ? (
                                 <span className="flex items-center justify-center">
@@ -199,9 +193,6 @@ const ForgotPassword = () => {
                         </Button>
 
                     ) : (
-                        // <Button type="button" className="w-full mt-4" onClick={handleVerifyOtp} disabled={timerExpired}>
-                        //     Reset Password
-                        // </Button>
                         <Button type="button" className="w-full mt-4" onClick={handleVerifyOtp} disabled={loading || timerExpired}>
                             {loading ? (
                                 <span className="flex items-center justify-center">
