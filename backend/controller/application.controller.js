@@ -187,7 +187,7 @@ export const applyJob = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log("Apply Job Error:", error);
+    // console.log("Apply Job Error:", error);
     return res.status(500).json({
       message: "Internal server error",
       success: false,
