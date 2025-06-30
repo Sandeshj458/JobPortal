@@ -4,10 +4,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon backend/index.js",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "nodemon backend/index.js"
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node backend/index.js",
+    "dev": "nodemon backend/index.js"
   },
+  
+  "engines": {
+  "node": "20.x"
+},
+
+
   "author": "",
   "license": "ISC",
   "description": "",
