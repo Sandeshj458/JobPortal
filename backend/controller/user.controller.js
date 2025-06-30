@@ -501,6 +501,8 @@ export const verifyOtp = async (req, res) => {
         { $unset: { forgotOtp: "", forgotCreatedAt: "" } }
       );
 
+      // console.log("Password Reset Successfully - Job Portal", email);
+      
       await sendEmail(
         email,
         "✅ Password Reset Successfully - Job Portal",

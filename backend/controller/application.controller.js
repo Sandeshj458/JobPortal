@@ -119,7 +119,6 @@ export const applyJob = async (req, res) => {
             }</strong> at <strong>${
           job.companyName || "our organization"
         }</strong>.</p>
-            <p>Your ATS score: <strong>${atsScore}/100</strong></p>
             <p>We’ll be in touch if you match our requirements.</p>
             <p>Location: ${job.location}<br/>Job Type: ${
           job.jobType
