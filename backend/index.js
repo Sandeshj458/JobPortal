@@ -7,7 +7,7 @@ import userRoute from "./routes/user.route.js"
 import companyRoute from "./routes/company.route.js"
 import jobRoute from "./routes/job.route.js"
 import applicationRoute from "./routes/application.route.js"
-import path from "path";
+// import path from "path";
 
 dotenv.config({});
 
@@ -16,7 +16,7 @@ dotenv.config({});
 connectDB();
 const PORT = process.env.PORT || 3000;
 const app = express();
-const _dirname = path.resolve();
+// const _dirname = path.resolve();
 
 // middleware
 app.use(express.json());
@@ -24,6 +24,7 @@ app.use(urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
     origin:'https://jobportal-l7ps.onrender.com',
+    // origin:'http://localhost:5173',
     credentials:true
 }
 app.use(cors(corsOptions));
@@ -40,10 +41,10 @@ app.use("/api/v1/application",applicationRoute);
 // http://localhost:8000/api/v1/user/register
 
 
-app.use(express.static(path.join(_dirname, "/frontend/dist")))
-app.get('*', (_, res) => {
-    res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
-})
+// app.use(express.static(path.join(_dirname, "/frontend/dist")))
+// app.get('*', (_, res) => {
+//     res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
+// })
 
 app.listen(PORT, () => {
     // connectDB();
