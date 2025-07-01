@@ -23,10 +23,16 @@ const Browse = () => {
   }, [queryFromUrl, dispatch])
 
   // Filter jobs that are active and match search query
+  // const filteredJobs = allJobs.filter(job => {
+  //   const isActive = new Date(job.expiredDate) >= new Date()
+  //   return isActive && (job.title?.toLowerCase().includes(queryFromUrl.toLowerCase()) == true)
+  // })
+
   const filteredJobs = allJobs.filter(job => {
-    const isActive = new Date(job.expiredDate) >= new Date()
-    return isActive && job.title?.toLowerCase().includes(queryFromUrl.toLowerCase())
-  })
+  const isActive = new Date(job.expiredDate) >= new Date();
+  const titleMatch = job.title?.toLowerCase().includes(queryFromUrl.toLowerCase());
+  return isActive && titleMatch;
+});
 
   return (
     <div>

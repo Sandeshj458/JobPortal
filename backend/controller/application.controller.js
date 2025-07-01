@@ -156,7 +156,6 @@ export const applyJob = async (req, res) => {
             <p><strong>${applicant.fullname}</strong> applied for <strong>${
           job.title
         }</strong>.</p>
-            <p>ATS Score: <strong>${atsScore}/100</strong></p>
             <p>Email: ${applicant.email}<br/>Phone: ${
           applicant.phoneNumber || "N/A"
         }<br/>Skills: ${skills}</p>
