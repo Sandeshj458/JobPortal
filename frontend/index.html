@@ -12,9 +12,9 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx" defer></script>
 
-     <!-- ✅ Chatbase script with dynamic key from VITE_CHATBASE_SECRET_KEY -->
+     <!-- ✅ Chatbase script with dynamic key from VITE_CHATBASE_ID -->
     <script type="module">
-      const chatbaseKey = import.meta.env.VITE_CHATBASE_SECRET_KEY;
+      const chatbaseKey = import.meta.env.VITE_CHATBASE_ID;
       if (chatbaseKey) {
         const script = document.createElement("script");
         script.src = "https://www.chatbase.co/embed.min.js";
