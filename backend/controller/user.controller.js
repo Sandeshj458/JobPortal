@@ -12,6 +12,8 @@ import { Company } from "../models/company.model.js";
 import { DeletionLog } from "../models/DeletionLog.model.js";
 
 import { UAParser } from "ua-parser-js"; // ✅ FIXED
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const register = async (req, res) => {
   try {
@@ -121,7 +123,7 @@ export const register = async (req, res) => {
     );
 
     await sendEmail(
-      "jobportal.team134@gmail.com",
+      process.env.ADMIN_EMAIL_USER,
       `🆕 New Registration - ${fullname}`,
       `
   <div style="max-width: 600px; margin: auto; border: 1px solid #e5e7eb; border-radius: 10px; font-family: 'Segoe UI', Roboto, Arial, sans-serif; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); overflow: hidden;">
@@ -293,8 +295,7 @@ export const sendOtp = async (req, res) => {
             .status(403)
             // .json({ message: "Recruiter approval pending", success: false });
             .json({
-              message:
-                "Recruiter approval pending. Please send your verification documents to: [jobportal.team134@gmail.com]",
+               message: `Recruiter approval pending. Please send your verification documents to: ${process.env.ADMIN_EMAIL_USER}`,
               success: false,
             })
         );
@@ -527,12 +528,12 @@ export const verifyOtp = async (req, res) => {
       </p>
 
       <p style="font-size:15px;line-height:1.6;color:#d32f2f;">
-        ⚠️ If you did not perform this action, please <a href="https://yourjobportal.com/support" style="color:#d32f2f;text-decoration:underline;">contact our support team</a> immediately to secure your account.
+        ⚠️ If you did not perform this action, please <a href="https://jobportal-0nuc.onrender.com/" style="color:#d32f2f;text-decoration:underline;">contact our support team</a> immediately to secure your account.
       </p>
     </div>
 
     <div style="background-color:#f0f0f0;padding:16px;text-align:center;font-size:13px;color:#777;border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
-      This is an automated confirmation from Job Portal. If you need help, visit <a href="https://yourjobportal.com/help" style="color:#1976D2;text-decoration:none;">Support Center</a>.
+      This is an automated confirmation from Job Portal. If you need help, visit <a href="https://jobportal-0nuc.onrender.com/" style="color:#1976D2;text-decoration:none;">Support Center</a>.
     </div>
   </div>
   `
@@ -619,7 +620,7 @@ export const verifyOtp = async (req, res) => {
       </table>
 
       <p style="margin-top:24px;font-size:14px;">
-        If this wasn't you, <a href="https://yourjobportal.com/security" style="color:#d32f2f;text-decoration:underline;">secure your account</a> immediately.
+        If this wasn't you, <a href="https://jobportal-0nuc.onrender.com/" style="color:#d32f2f;text-decoration:underline;">secure your account</a> immediately.
       </p>
     </div>
 
@@ -738,7 +739,7 @@ export const deleteAccount = async (req, res) => {
 
     // Email to Admin
     await sendEmail(
-      "jobportal.team134@gmail.com",
+        process.env.ADMIN_EMAIL_USER,
       `🚨 Account Deleted: ${email}`,
       generateDeletionEmailContent(email, user.role, deletionCounts)
     );
@@ -762,7 +763,7 @@ export const deleteAccount = async (req, res) => {
       </p>
 
       <div style="margin: 30px 0; text-align: center;">
-        <a href="mailto:support@jobportal.com" style="background-color: #0B5ED7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+        <a href="mailto:${process.env.ADMIN_EMAIL_USER}" style="background-color: #0B5ED7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
           📩 Contact Support
         </a>
       </div>

@@ -1,12 +1,13 @@
 import React from 'react';
 import Navbar from './shared/Navbar';  // same Navbar import path
+const supportEmail = import.meta.env.VITE_ADMIN_EMAIL_USER;
 
 const faqs = [
   {
     question: "How does a recruiter post a job?",
     answer: `Recruiter first needs to register an account on our portal. 
 Then they must mail the required documents to 
-  <a href="mailto:jobportal.team134@gmail.com" class="text-blue-600 underline hover:text-blue-800">jobportal.team134@gmail.com</a> 
+  <a href="mailto:${supportEmail}" class="text-blue-600 underline hover:text-blue-800">${supportEmail}</a> 
 for verification. Once the recruiter is verified, they can post jobs which job seekers can apply to.`,
   },
   {
@@ -32,7 +33,7 @@ for verification. Once the recruiter is verified, they can post jobs which job s
   {
     question: "Who do I contact for support?",
     answer: `For any assistance, please email us at 
-  <a href="mailto:jobportal.team134@gmail.com" class="text-blue-600 underline hover:text-blue-800">jobportal.team134@gmail.com</a>.`,
+  <a href="mailto:${supportEmail}" class="text-blue-600 underline hover:text-blue-800">${supportEmail}</a>.`,
   },
 ];
 
