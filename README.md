@@ -88,28 +88,24 @@ CLOUD_NAME=your_cloud_name
 API_KEY=your_cloudinary_api_key
 API_SECRET=your_cloudinary_api_secret
 
-# Email for OTP
-ADMIN_EMAIL_USER=your_email@gmail.com
-ADMIN_EMAIL_PASS=your_app_password
-
 # Chatbase
 CHATBASE_SECRET_KEY=your_chatbase_secret_key
 VITE_CHATBASE_ID=your_chatbase_id
 
-# Frontend Env
-VITE_ADMIN_EMAIL_USER=your_email@gmail.com
+# For backend (Node.js)
+ADMIN_EMAIL_USER=your_email@gmail.com
+ADMIN_EMAIL_PASS=zkxa pism dmtj gvsj
+RENDER_DEPLOY_LINK=https://jobportal-0nuc.onrender.com/
 
+# For frontend (React)
+VITE_ADMIN_EMAIL_USER=your_email4@gmail.com
+VITE_RENDER_DEPLOY_LINK=https://jobportal-0nuc.onrender.com/
 
 
 # 3. Build and install all dependencies (backend + frontend)
 npm run build
 
-# 4. Run in Development Mode (recommended while building)
-npm run dev
-
-OR
-
-# Run in Production Mode (backend + built frontend)
+# 4. Run in Production Mode (backend + built frontend)
 npm run start
 
 
