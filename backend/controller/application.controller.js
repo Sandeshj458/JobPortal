@@ -4,6 +4,8 @@ import sendEmail from "../utils/send-email.js"; // Adjust import if needed
 import { User } from "../models/user.model.js"; // Assuming you have User model to fetch user info
 import axios from "axios";
 import textract from "textract";
+import dotenv from "dotenv";
+dotenv.config({});
 
 // 🧠 Helper: extract plain text from PDF resume
 const getResumeText = async (resumeUrl) => {
@@ -124,7 +126,7 @@ export const applyJob = async (req, res) => {
           job.jobType
         }<br/>Salary: ${job.salary}</p>
             <div style="text-align:center;margin:30px 0;">
-              <a href="https://jobportal-0nuc.onrender.com/" style="background-color:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">
+              <a href="${process.env.RENDER_DEPLOY_LINK}" style="background-color:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">
                 Visit Job Portal
               </a>
             </div>
@@ -165,7 +167,7 @@ export const applyJob = async (req, res) => {
                 : "Not uploaded"
             }</p>
             <div style="text-align:center;margin:30px 0;">
-              <a href="https://jobportal-0nuc.onrender.com/" style="background-color:#0B5ED7;color:#fff;padding:12px 24px;text-decoration:none;border-radius:5px;">
+              <a href="${process.env.RENDER_DEPLOY_LINK}" style="background-color:#0B5ED7;color:#fff;padding:12px 24px;text-decoration:none;border-radius:5px;">
                 🔍 View Application
               </a>
             </div>

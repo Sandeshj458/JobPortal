@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin:'https://jobportal-0nuc.onrender.com/',
+    origin: process.env.RENDER_DEPLOY_LINK,
     credentials:true
 }
 app.use(cors(corsOptions));
@@ -35,9 +35,6 @@ app.use("/api/v1/user",userRoute);
 app.use("/api/v1/company",companyRoute);
 app.use("/api/v1/job",jobRoute);
 app.use("/api/v1/application",applicationRoute);
-
-// api's
-// http://localhost:8000/api/v1/user/register
 
 
 app.use(express.static(path.join(_dirname, "/frontend/dist")))

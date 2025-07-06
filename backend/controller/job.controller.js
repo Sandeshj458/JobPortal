@@ -1,6 +1,8 @@
 import { Job } from "../models/job.model.js";
 import { User } from "../models/user.model.js"; // Import User model
 import sendEmail from "../utils/send-email.js"; // Import email utility
+import dotenv from "dotenv";
+dotenv.config({});
 
 export const postJob = async (req, res) => {
   try {
@@ -151,7 +153,7 @@ export const postJob = async (req, res) => {
       </p>
 
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://jobportal-0nuc.onrender.com/" target="_blank" style="background-color: #0B5ED7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+        <a href="${process.env.RENDER_DEPLOY_LINK}" target="_blank" style="background-color: #0B5ED7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
           🔗 View & Apply Now
         </a>
       </div>

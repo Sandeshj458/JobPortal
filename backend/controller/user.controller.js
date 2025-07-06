@@ -523,12 +523,12 @@ export const verifyOtp = async (req, res) => {
       </p>
 
       <p style="font-size:15px;line-height:1.6;color:#d32f2f;">
-        ⚠️ If you did not perform this action, please <a href="https://jobportal-0nuc.onrender.com/" style="color:#d32f2f;text-decoration:underline;">contact our support team</a> immediately to secure your account.
+        ⚠️ If you did not perform this action, please <a href="${process.env.RENDER_DEPLOY_LINK}" style="color:#d32f2f;text-decoration:underline;">contact our support team</a> immediately to secure your account.
       </p>
     </div>
 
     <div style="background-color:#f0f0f0;padding:16px;text-align:center;font-size:13px;color:#777;border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
-      This is an automated confirmation from Job Portal. If you need help, visit <a href="https://jobportal-0nuc.onrender.com/" style="color:#1976D2;text-decoration:none;">Support Center</a>.
+      This is an automated confirmation from Job Portal. If you need help, visit <a href="${process.env.RENDER_DEPLOY_LINK}" style="color:#1976D2;text-decoration:none;">Support Center</a>.
     </div>
   </div>
   `
@@ -615,7 +615,7 @@ export const verifyOtp = async (req, res) => {
       </table>
 
       <p style="margin-top:24px;font-size:14px;">
-        If this wasn't you, <a href="https://jobportal-0nuc.onrender.com/" style="color:#d32f2f;text-decoration:underline;">secure your account</a> immediately.
+        If this wasn't you, <a href="${process.env.RENDER_DEPLOY_LINK}" style="color:#d32f2f;text-decoration:underline;">secure your account</a> immediately.
       </p>
     </div>
 
