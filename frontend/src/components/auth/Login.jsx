@@ -44,8 +44,7 @@ const Login = () => {
         `${USER_API_END_POINT}/send-otp`,
         {
           email: input.email,
-          // password: input.password,
-          password: encryptData(input.password),   // ✅ Encrypt Password
+          password: input.password,
           role: input.role,
           purpose: "login",
         },
@@ -74,11 +73,9 @@ const Login = () => {
         `${USER_API_END_POINT}/verify-otp`,
         {
           email: input.email,
-          // password: input.password,
-          password: encryptData(input.password),   // ✅ Encrypt Password
+          password: input.password,
           role: input.role,
-          // otp,
-          otp: encryptData(otp),                   // ✅ Encrypt OTP
+          otp,
         },
         { withCredentials: true }
       );
@@ -215,7 +212,6 @@ const Login = () => {
                   disabled={timerExpired || loading}
                   className="w-32 text-center text-lg font-semibold"
                   value={otp}
-                  // onChange={(e) => setOtp(e.target.value)}
                   onChange={(e) => {
                     const value = e.target.value;
                     if (/^\d*$/.test(value)) setOtp(value); // allow only digits

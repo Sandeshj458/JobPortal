@@ -27,7 +27,6 @@ import {
 } from '@/components/ui/dialog';
 
 import { Button } from '@/components/ui/button';
-// import useGetAllCompanies from '@/hooks/useGetAllCompanies';
 
 const CompaniesTable = () => {
   const formatDate = (isoDate) => {

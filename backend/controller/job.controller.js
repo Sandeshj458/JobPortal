@@ -109,16 +109,6 @@ export const postJob = async (req, res) => {
       const matchByExperience =
         !isNaN(userExp) && !isNaN(jobExp) && userExp >= jobExp;
 
-      // console.log("\n======== MATCH CHECK =========");
-      // console.log("👤 User:", user.email);
-      // console.log("🧠 Title:", title);
-      // console.log("📖 Bio:", user?.profile?.bio);
-      // console.log("🎓 Education Match:", matchByEducation);
-      // console.log("📋 Job Keywords:", job.keywords);
-      // console.log("🛠️ User Skills:", userSkills);
-      // console.log("🎯 Matched Keywords:", matchedKeywords);
-      // console.log("💼 Experience Match:", matchByExperience);
-
       if (
         matchByTitle ||
         matchByEducation ||
@@ -161,7 +151,7 @@ export const postJob = async (req, res) => {
       </p>
 
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://yourjobportal.com/jobs" target="_blank" style="background-color: #0B5ED7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+        <a href="https://jobportal-0nuc.onrender.com/" target="_blank" style="background-color: #0B5ED7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
           🔗 View & Apply Now
         </a>
       </div>
@@ -173,12 +163,8 @@ export const postJob = async (req, res) => {
   </tr>
 </table>
 `;
-
-        // console.log(`📧 Sending email to ${user.email} for matched job`);
-        // Send the email
         await sendEmail(user.email, `Job Match Found: ${title}`, emailHtml);
 
-        // console.log(`✅ Email sent to ${user.email}`);
       }
     }
 
@@ -195,35 +181,6 @@ export const postJob = async (req, res) => {
     });
   }
 };
-
-// for Student
-// export const getAllJobs = async (req, res) => {
-//   try {
-//     const keyword = req.query.keyword || "";
-//     const query = {
-//       $or: [
-//         { title: { $regex: keyword, $options: "i" } }, // $options:"i" => 'i' is case sensitive
-//         { description: { $regex: keyword, $options: "i" } },
-//       ],
-//     };
-
-//     const jobs = await Job.find(query)
-//       .populate({ path: "company" })
-//       .sort({ createdAt: -1 });
-//     if (!jobs) {
-//       return res.status(404).json({
-//         message: "Jobs not found.",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({
-//       jobs,
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 export const getAllJobs = async (req, res) => {
   try {
@@ -294,36 +251,6 @@ export const getAdminJobs = async (req, res) => {
   }
 };
 
-// for Student
-// export const getJobById = async (req, res) => {
-//   try {
-//     const jobId = req.params.id;
-//     console.log("Received ID:", jobId);
-
-//     if (!jobId || jobId === "undefined") {
-//       return res.status(400).json({
-//         error: "Job ID is required",
-//       });
-//     }
-
-//     const job = await Job.findById(jobId).populate({
-//       path: "applications",
-//     });
-//     if (!job) {
-//       return res.status(404).json({
-//         message: "Jobs not found.",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({
-//       job,
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 export const getJobById = async (req, res) => {
   try {
     const jobId = req.params.id;
@@ -362,37 +289,6 @@ export const getJobById = async (req, res) => {
     });
   }
 };
-
-
-// export const filterJobs = async (req, res) => {
-//   try {
-//     const { searchedQuery } = req.query;
-//     const filter = {};
-
-//     if (searchedQuery) {
-//       if (
-//         searchedQuery.includes("Lakhs") ||
-//         searchedQuery.includes("K") ||
-//         searchedQuery.includes("Cr")
-//       ) {
-//         filter.salary = searchedQuery; // Exact match
-//       } else {
-//         filter.$or = [
-//           { location: { $regex: searchedQuery, $options: "i" } },
-//           { industry: { $regex: searchedQuery, $options: "i" } },
-//         ];
-//       }
-//     }
-
-//     const jobs = await Job.find(filter).populate("company");
-
-//     res.status(200).json({ success: true, data: jobs });
-//   } catch (error) {
-//     console.error("Error filtering jobs:", error);
-//     res.status(500).json({ success: false, message: "Server error" });
-//   }
-// };
-
 
 export const filterJobs = async (req, res) => {
   try {

@@ -20,12 +20,10 @@ const Job = ({ job }) => {
     return Math.floor(timeDifference / (1000 * 24 * 60 * 60))
   }
   return (
-    // <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100'>
     <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100 h-[350px] flex flex-col justify-between'>
 
       <div className='flex items-center justify-between'>
         <p className='text-sm text-gray-500'>{daysAgoFunction(job?.createdAt) == 0 ? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`}</p>
-        {/* <Button variant='outline' className='rounded-full' size='icon'><Bookmark /></Button> */}
       </div>
 
       <div className='flex items-center gap-2 my-2'>
@@ -49,7 +47,6 @@ const Job = ({ job }) => {
       </div>
 
       <div className='flex flex-wrap items-center gap-2 mt-4'>
-        {/* <div className='flex items-center gap-2 mt-4'> */}
         <Badge className='text-blue-700 font-bold' variant='ghost'>{job?.position} Positions</Badge>
         <Badge className='text-[#F83002] font-bold' variant='ghost'>{job?.jobType}</Badge>
         <Badge className='text-[#7209b7] font-bold' variant='ghost'>{job?.salary}</Badge>

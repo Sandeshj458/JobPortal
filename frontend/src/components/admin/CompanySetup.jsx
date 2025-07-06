@@ -67,13 +67,11 @@ const companySetup = () => {
         withCredentials: true
       });
       if (res.data.success) {
-        // toast.success(res.data.message);
         showSuccessToast(res.data.message);
         navigate("/admin/companies")
       }
     } catch (error) {
       console.log(error);
-      // toast.error(error.response.data.message);
       showErrorToast(error.response.data.message);
     } finally {
       setLoading(false);

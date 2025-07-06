@@ -11,7 +11,6 @@ const JobList = () => {
     if (searchedQuery) {
       axios
         .get(`/api/jobs/filter?searchedQuery=${encodeURIComponent(searchedQuery)}`)
-        // .then(res => setJobs(res.data.data))
         .then(res => {
           const currentDate = new Date();
           const activeJobs = res.data.data.filter(job => new Date(job.expiredDate) >= currentDate);

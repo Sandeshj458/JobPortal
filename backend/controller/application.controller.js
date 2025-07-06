@@ -124,7 +124,7 @@ export const applyJob = async (req, res) => {
           job.jobType
         }<br/>Salary: ${job.salary}</p>
             <div style="text-align:center;margin:30px 0;">
-              <a href="https://yourjobportal.com" style="background-color:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">
+              <a href="https://jobportal-0nuc.onrender.com/" style="background-color:#4CAF50;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;">
                 Visit Job Portal
               </a>
             </div>
@@ -165,7 +165,7 @@ export const applyJob = async (req, res) => {
                 : "Not uploaded"
             }</p>
             <div style="text-align:center;margin:30px 0;">
-              <a href="https://yourjobportal.com/recruiter/dashboard" style="background-color:#0B5ED7;color:#fff;padding:12px 24px;text-decoration:none;border-radius:5px;">
+              <a href="https://jobportal-0nuc.onrender.com/" style="background-color:#0B5ED7;color:#fff;padding:12px 24px;text-decoration:none;border-radius:5px;">
                 🔍 View Application
               </a>
             </div>
@@ -234,8 +234,7 @@ export const getApplicants = async (req, res) => {
         path: "applicant",
       },
     });
-    // console.log(job);
-
+   
     if (!job) {
       return res.status(404).json({
         message: "Job not found.",
@@ -258,7 +257,6 @@ export const updateStatus = async (req, res) => {
     const applicationId = req.params.id;
     if (!applicationId) {
       return res.status(400).json({
-        // message: "status is required",
         message: "Application ID is required.",
         success: false,
       });

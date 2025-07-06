@@ -108,7 +108,6 @@ const ForgotPassword = () => {
                                     disabled={timerExpired || loading}
                                     className="w-32 text-center text-lg font-semibold"
                                     value={otp}
-                                    //   onChange={(e) => setOtp(e.target.value)}
                                     onChange={(e) => {
                                         const value = e.target.value;
                                         if (/^\d*$/.test(value)) setOtp(value); // allow only digits

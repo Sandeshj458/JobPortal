@@ -92,7 +92,6 @@ export const register = async (req, res) => {
     });
 
     // ✅ Send Welcome Email to User
-    // ✅ Send Welcome Email to User
     await sendEmail(
       email,
       "🎉 Registration Successful - Job Portal",
@@ -293,7 +292,6 @@ export const sendOtp = async (req, res) => {
         return (
           res
             .status(403)
-            // .json({ message: "Recruiter approval pending", success: false });
             .json({
                message: `Recruiter approval pending. Please send your verification documents to: ${process.env.ADMIN_EMAIL_USER}`,
               success: false,
@@ -487,7 +485,6 @@ export const verifyOtp = async (req, res) => {
         return (
           res
             .status(400)
-            // .json({ message: "New password required", success: false });
             .json({
               message: "Please enter a new password",
               success: false,
@@ -502,8 +499,6 @@ export const verifyOtp = async (req, res) => {
         { $unset: { forgotOtp: "", forgotCreatedAt: "" } }
       );
 
-      // console.log("Password Reset Successfully - Job Portal", email);
-      
       await sendEmail(
         email,
         "✅ Password Reset Successfully - Job Portal",

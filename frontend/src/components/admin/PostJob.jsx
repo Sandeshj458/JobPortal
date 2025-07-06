@@ -72,7 +72,6 @@ const PostJob = () => {
             expiredDate: input.expiredDate.trim(),
             education: input.education.trim(),
             screeningType: input.screeningType.trim(),
-            // keywords: input.keywords.trim(),
             keywords: input.screeningType === "ATS" ? input.keywords.trim().toLowerCase()  : "",
         };
 
@@ -90,7 +89,6 @@ const PostJob = () => {
         // ✅ Salary validation
         const salaryValue = parseFloat(trimmedInput.salary);
         if (isNaN(salaryValue) || salaryValue <= 0) {
-            // toast.error("Salary must be a valid number greater than 0.");
             showErrorToast("Salary must be a valid number greater than 0.");
             setLoading(false);
             return;
@@ -99,7 +97,6 @@ const PostJob = () => {
         // ✅ Experience validation
         const experienceValue = parseFloat(trimmedInput.experience);
         if (isNaN(experienceValue) || experienceValue < 0) {
-            // toast.error("Experience must be a valid non-negative number.");
             showErrorToast("Experience must be a valid non-negative number.");
             setLoading(false);
             return;
@@ -107,7 +104,6 @@ const PostJob = () => {
 
         // ✅ Position validation
         if (trimmedInput.position <= 0) {
-            // toast.error("Number of positions must be greater than 0.");
             showErrorToast("Number of positions must be greater than 0.");
             setLoading(false);
             return;
@@ -115,7 +111,6 @@ const PostJob = () => {
 
         // ✅ Salary unit and duration validation
         if (!input.salaryUnit || !input.salaryDuration) {
-            // toast.error("Please select both salary unit and duration.");
             showErrorToast("Please select both salary unit and duration.");
             setLoading(false);
             return;
@@ -144,12 +139,10 @@ const PostJob = () => {
             });
 
             if (res.data.success) {
-                // toast.success(res.data.message);
                 showSuccessToast(res.data.message)
                 navigate("/admin/jobs");
             }
         } catch (error) {
-            // toast.error(error.response?.data?.message || 'Failed to post job');
             showErrorToast(error.response?.data?.message || 'Failed to post job')
         } finally {
             setLoading(false);
@@ -184,7 +177,6 @@ const PostJob = () => {
                                 placeholder="e.g., B.Tech in Computer Science"
                                 value={input.education}
                                 onChange={changeEventHandler}
-                                // placeholder="e.g., B.Tech in Computer Science"
                                 required
                             />
                         </div>

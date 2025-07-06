@@ -119,27 +119,6 @@
     @apply bg-background text-foreground;
   }
 }
-/* 
-@keyframes marquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.marquee-container {
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  position: relative;
-}
-
-.marquee-content {
-  display: inline-block;
-  animation: marquee 50s linear infinite;
-} */
 
 .marquee-container {
   overflow: hidden;

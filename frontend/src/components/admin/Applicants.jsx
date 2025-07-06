@@ -26,8 +26,6 @@ const Applicants = () => {
             withCredentials: true
           });
 
-        // console.log(res.data);
-
         dispatch(setAllApplicants(res.data.job));
 
       } catch (error) {
@@ -60,7 +58,6 @@ const Applicants = () => {
        
         <div className="max-w-5xl mx-auto my-10 p-6 bg-white shadow-lg rounded-xl border">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            {/* Applicants ({applicants?.applications?.length || 0}) */}
             Applicants ({applicants?.applications?.length || 0}) - {screeningType} Screening
           </h2>
           <ApplicantsTable screeningType={screeningType} />

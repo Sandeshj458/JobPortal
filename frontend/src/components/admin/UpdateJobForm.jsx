@@ -31,7 +31,6 @@ const UpdateJobForm = () => {
 
     const dispatch = useDispatch(); // ✅ (Line 27) Initialized useDispatch
 
-    // const { jobId } = useParams(); // get jobId from route params
     const params = useParams();
     const jobId = params.id;
 
@@ -56,9 +55,6 @@ const UpdateJobForm = () => {
     const navigate = useNavigate();
     const { companies } = useSelector(store => store.company);
 
-    // console.log("Current input state:", input);
-
-
     useEffect(() => {
 
         // Fetch job details to prefill the form for update
@@ -69,20 +65,13 @@ const UpdateJobForm = () => {
                 });
                 if (res.data.success) {
                     const job = res.data.job;
-                    // console.log("Fetched job", job);
-                    // console.log("Job experience raw:", job.experience);
-                    // console.log("Job experience type:", typeof job.experience);
-
-
-                    // Parse salary to extract numeric value, unit, and duration
-                    // Assuming salary format: "40K/month" or "2Lakhs/year"
+                    
                     const salaryRegex = /^(\d+\.?\d*)(K|Lakhs|Cr)(\/month|\/year)$/;
                     const salaryMatch = job.salary.match(salaryRegex);
 
                     setInput({
                         title: job.title || "",
                         description: job.description || "",
-                        // requirements: job.requirements || "",
                         requirements: Array.isArray(job.requirements) ? job.requirements.join(", ") : (job.requirements || ""),
                         salary: salaryMatch ? salaryMatch[1] : "",
                         salaryUnit: salaryMatch ? salaryMatch[2] : "",
@@ -93,7 +82,6 @@ const UpdateJobForm = () => {
                         position: job.position || 0,
                         companyId: job.company || "",
                         expiredDate: job.expiredDate ? job.expiredDate.split('T')[0] : "",
-                        //  education: job.education || "",
                         education: Array.isArray(job.education) ? job.education.join(", ") : (job.education || ""),
 
                     });
@@ -132,7 +120,6 @@ const UpdateJobForm = () => {
             ...input,
             title: input.title.trim(),
             description: input.description.trim(),
-            // requirements: input.requirements.trim(),
             requirements: typeof input.requirements === 'string'
                 ? input.requirements.split(',').map(item => item.trim()).filter(item => item)
                 : [],
@@ -142,7 +129,6 @@ const UpdateJobForm = () => {
             jobType: input.jobType.trim(),
             experience: input.experience.trim(),
             expiredDate: input.expiredDate.trim(),
-            //  education: input.education.trim(),
             education: typeof input.education === 'string'
                 ? input.education
                     .split(',')
