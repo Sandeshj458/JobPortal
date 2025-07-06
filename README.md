@@ -94,12 +94,12 @@ VITE_CHATBASE_ID=your_chatbase_id
 
 # For backend (Node.js)
 ADMIN_EMAIL_USER=your_email@gmail.com
-ADMIN_EMAIL_PASS=zkxa pism dmtj gvsj
-RENDER_DEPLOY_LINK=https://jobportal-0nuc.onrender.com/
+ADMIN_EMAIL_PASS=your_app_password
+RENDER_DEPLOY_LINK=your_render_link
 
 # For frontend (React)
-VITE_ADMIN_EMAIL_USER=your_email4@gmail.com
-VITE_RENDER_DEPLOY_LINK=https://jobportal-0nuc.onrender.com/
+VITE_ADMIN_EMAIL_USER=your_email@gmail.com
+VITE_RENDER_DEPLOY_LINK=your_render_link
 
 
 # 3. Build and install all dependencies (backend + frontend)
@@ -111,6 +111,5 @@ npm run start
 
 
 # 5. Open any Browser and type
-
-https://jobportal-0nuc.onrender.com/
+Application deployed "your_render_link"
 
