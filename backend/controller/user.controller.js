@@ -269,7 +269,6 @@ export const sendOtp = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    console.log("Email : ", user);
     if (!user)
       return res
         .status(400)

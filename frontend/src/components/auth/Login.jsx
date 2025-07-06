@@ -38,7 +38,6 @@ const Login = () => {
 
     try {
       dispatch(setLoading(true));
-      // console.log("Sending OTP to:", `${USER_API_END_POINT}/send-otp`);
 
       await axios.post(
         `${USER_API_END_POINT}/send-otp`,
