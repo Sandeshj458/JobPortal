@@ -10,22 +10,26 @@ import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   useGetAllJobs();
-  const {user} = useSelector(store=>store.auth);
+  const { user } = useSelector(store => store.auth);
   const navigate = useNavigate();
 
-  useEffect(()=> {
-    if(user?.role == 'recruiter') {
+  useEffect(() => {
+    if (user?.role == 'recruiter') {
       navigate("/admin/companies");
     }
   }, []);
 
   return (
-    <div>
-        <Navbar/>
-        <HeroSection/>
-        <CategoryCarousel/>
-        <LatestJobs/>
-        {/* <Footer/> */}
+    <div className="w-full overflow-x-hidden"> 
+      <Navbar />
+
+      <div className="px-4 sm:px-6 md:px-10 space-y-8 mt-4">
+        <HeroSection />
+        <CategoryCarousel />
+        <LatestJobs />
+      </div>
+      {/* <Footer/> */}
+      
     </div>
   )
 }

@@ -27,7 +27,7 @@ const filterData = [
 const salaryUnits = ['K', 'Lakhs', 'Cr'];
 const salaryDurations = ['/month', '/year'];
 
-const FilterCard = () => {
+const FilterCard = ({ onApply }) => {
   const [selectedValue, setSelectedValue] = useState('');
   const [salaryAmount, setSalaryAmount] = useState('');
   const [salaryUnit, setSalaryUnit] = useState('Lakhs');
@@ -35,18 +35,21 @@ const FilterCard = () => {
 
   const dispatch = useDispatch();
 
-  const handleRadioChange = (value) => setSelectedValue(value);
+  const handleRadioChange = (value) => {
+  setSelectedValue(value);
+  dispatch(setSearchedQuery(value)); 
+  if (onApply) onApply();
+};
 
-  const handleSalaryFilter = () => {
-    if (salaryAmount) {
-      const finalSalary = `${salaryAmount}${salaryUnit}${salaryDuration}`;
-      setSelectedValue(finalSalary);
-    }
-  };
 
-  useEffect(() => {
-    if (selectedValue) dispatch(setSearchedQuery(selectedValue));
-  }, [selectedValue]);
+ const handleSalaryFilter = () => {
+  if (salaryAmount) {
+    const finalSalary = `${salaryAmount}${salaryUnit}${salaryDuration}`;
+    setSelectedValue(finalSalary);
+    dispatch(setSearchedQuery(finalSalary)); 
+    if (onApply) onApply();
+  }
+};
 
   return (
     <div className="w-full bg-white p-3 rounded-md">
@@ -84,7 +87,7 @@ const FilterCard = () => {
               onChange={(e) => setSalaryUnit(e.target.value)}
               className="border px-2 py-1 rounded"
             >
-              {salaryUnits.map((unit) => (
+              {salaryUnits.map(unit => (
                 <option key={unit} value={unit}>{unit}</option>
               ))}
             </select>
@@ -93,7 +96,7 @@ const FilterCard = () => {
               onChange={(e) => setSalaryDuration(e.target.value)}
               className="border px-2 py-1 rounded"
             >
-              {salaryDurations.map((duration) => (
+              {salaryDurations.map(duration => (
                 <option key={duration} value={duration}>{duration}</option>
               ))}
             </select>
@@ -111,3 +114,4 @@ const FilterCard = () => {
 };
 
 export default FilterCard;
+
