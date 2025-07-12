@@ -111,5 +111,5 @@ npm run start
 
 
 # 5. Open any Browser and type
-Application deployed "your_render_link"
+Application deployed "https://jobportal-0nuc.onrender.com/"
 
