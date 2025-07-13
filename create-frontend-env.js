@@ -1,5 +1,10 @@
+import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+
+// ✅ Load .env from root directory
+dotenv.config();
+
 
 // Access directly from process.env (Render injects these)
 const {

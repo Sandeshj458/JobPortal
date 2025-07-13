@@ -11,7 +11,6 @@ import { showSuccessToast, showErrorToast } from "@/utils/toast";
 import UpdateProfileDialog from './UpdateProfileDialog'; // ✅ NEW: Import profile dialog
 
 
-
 const JobDescription = () => {
 
   const formatDate = (isoDate) => {
@@ -22,16 +21,18 @@ const JobDescription = () => {
 
   const { singleJob } = useSelector(store => store.job);
   const { user } = useSelector(store => store.auth);
+  
   const isInitiallyApplied =
-    singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+  singleJob?.applications?.some(application => application.applicant === user?._id) || false;
+  
   const [isApplied, setIsApplied] = useState(isInitiallyApplied);
+  const [openProfileDialog, setOpenProfileDialog] = useState(false); // ✅ NEW: State to open dialog
 
   const params = useParams();
   const jobId = params.id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [openProfileDialog, setOpenProfileDialog] = useState(false); // ✅ NEW: State to open dialog
 
   // ✅ NEW: Check if profile is complete
   const isProfileComplete = (user) => {
