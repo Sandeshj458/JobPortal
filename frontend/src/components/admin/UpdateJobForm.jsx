@@ -65,7 +65,7 @@ const UpdateJobForm = () => {
                 });
                 if (res.data.success) {
                     const job = res.data.job;
-                    
+
                     const salaryRegex = /^(\d+\.?\d*)(K|Lakhs|Cr)(\/month|\/year)$/;
                     const salaryMatch = job.salary.match(salaryRegex);
 
@@ -222,9 +222,12 @@ const UpdateJobForm = () => {
     return (
         <div>
             <Navbar />
-            <div className='flex items-center justify-center w-screen my-5'>
-                <form onSubmit={submitHandler} className='p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md mt-6 bg-white'>
-                    <div className='grid grid-cols-2 gap-4'>
+            
+            <div className='flex items-center justify-center w-full overflow-x-hidden'>
+                <form onSubmit={submitHandler} className='p-4 sm:p-6 md:p-8 w-full max-w-4xl border border-gray-200 shadow-lg rounded-md mt-6 bg-white'>
+
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+
                         <div className="mb-4">
                             <Label>Title</Label>
                             <Input type="text" name="title" value={input.title} onChange={changeEventHandler} required />
