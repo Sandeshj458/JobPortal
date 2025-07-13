@@ -6,7 +6,6 @@ import axios from 'axios'
 import { APPLICATION_API_END_POINT } from '@/utils/constant'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAllApplicants } from '@/redux/applicationSlice'
-import store from '@/redux/store'
 
 const Applicants = () => {
   const params = useParams();

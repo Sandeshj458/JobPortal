@@ -5,7 +5,6 @@ import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/datauri.js";
 import sendEmail from "../utils/send-email.js";
 import { Otp } from "../models/otp.model.js";
-
 import { Job } from "../models/job.model.js";
 import { Application } from "../models/application.model.js";
 import { Company } from "../models/company.model.js";

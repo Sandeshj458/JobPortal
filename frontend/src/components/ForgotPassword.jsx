@@ -15,7 +15,6 @@ const ForgotPassword = () => {
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [otpSent, setOtpSent] = useState(false);
-    const [otpVerified, setOtpVerified] = useState(false);
     const [timerExpired, setTimerExpired] = useState(false);
     const [timeLeft, setTimeLeft] = useState(120);
     const navigate = useNavigate();

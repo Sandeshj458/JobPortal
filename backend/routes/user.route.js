@@ -3,7 +3,6 @@ import express from "express";
 import { deleteAccount, logout, register, sendOtp, updateProfile, verifyOtp } from "../controller/user.controller.js"
 import isAuthenticated from "../middleware/isAuthenticated.js";
 import { singleUpload } from "../middleware/multer.js";
-// import { otpSendLimiter, otpVerifyLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Badge } from './ui/badge';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);

@@ -4,12 +4,10 @@ import { Bookmark } from 'lucide-react'
 import { Avatar, AvatarImage } from './ui/avatar'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
-import { fetchAllJobs } from '@/hooks/jobActins'
 
 const Job = ({ job }) => {
 
   const navigate = useNavigate();
-  // const jobId = "adbdajhszsdvdvsh";
 
   const daysAgoFunction = (mongoTime) => {
     const createdAt = new Date(mongoTime);
@@ -18,15 +16,12 @@ const Job = ({ job }) => {
     return Math.floor(timeDifference / (1000 * 24 * 60 * 60))
   }
   return (
-    // <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100 h-[350px] flex flex-col justify-between'>
     <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100 min-h-[350px] flex flex-col justify-between'>
-
 
       <div className='flex items-center justify-between'>
         <p className='text-sm text-gray-500'>{daysAgoFunction(job?.createdAt) == 0 ? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`}</p>
       </div>
 
-      {/* <div className='flex items-center gap-2 my-2'> */}
       <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 my-2'>
         <Button className='p-6' variant='outline' size='icon'>
           <Avatar className="rounded-none w-9 h-8 overflow-hidden">
