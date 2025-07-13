@@ -72,7 +72,7 @@ const PostJob = () => {
             expiredDate: input.expiredDate.trim(),
             education: input.education.trim(),
             screeningType: input.screeningType.trim(),
-            keywords: input.screeningType === "ATS" ? input.keywords.trim().toLowerCase()  : "",
+            keywords: input.screeningType === "ATS" ? input.keywords.trim().toLowerCase() : "",
         };
 
         // ✅ Validate all required fields
@@ -80,7 +80,7 @@ const PostJob = () => {
             !trimmedInput.salary || !trimmedInput.location || !trimmedInput.jobType ||
             !trimmedInput.experience || !trimmedInput.position || !trimmedInput.companyId ||
             !trimmedInput.expiredDate || !trimmedInput.education || !trimmedInput.screeningType ||
-            (trimmedInput.screeningType === "ATS" && !trimmedInput.keywords) ) {
+            (trimmedInput.screeningType === "ATS" && !trimmedInput.keywords)) {
             toast.error("Please fill in all required fields.");
             setLoading(false);
             return;
@@ -152,9 +152,14 @@ const PostJob = () => {
     return (
         <div>
             <Navbar />
-            <div className='flex items-center justify-center w-screen my-5s'>
+            {/* <div className='flex items-center justify-center w-screen my-5s'>
                 <form onSubmit={submitHandler} className='p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md mt-6 bg-white'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4'> */}
+            <div className='flex items-center justify-center w-full overflow-x-hidden'>
+                <form onSubmit={submitHandler} className='p-4 sm:p-6 md:p-8 w-full max-w-4xl border border-gray-200 shadow-lg rounded-md mt-6 bg-white'>
+
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+
                         <div className="mb-4">
                             <Label>Title</Label>
                             <Input type="text" name="title" placeholder="e.g., Frontend Developer" value={input.title} onChange={changeEventHandler} required />
