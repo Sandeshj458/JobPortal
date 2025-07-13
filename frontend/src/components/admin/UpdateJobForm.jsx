@@ -222,34 +222,35 @@ const UpdateJobForm = () => {
     return (
         <div>
             <Navbar />
-            <div className='flex items-center justify-center w-screen my-5'>
-                <form onSubmit={submitHandler} className='p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md mt-6 bg-white'>
-                    <div className='grid grid-cols-2 gap-4'>
+            <div className='flex items-center justify-center w-full px-2 sm:px-4 my-5'>
+                <form onSubmit={submitHandler} className='p-4 sm:p-6 md:p-8 w-[95%] max-w-4xl border border-gray-200 shadow-lg rounded-md mt-6 bg-white'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+
                         <div className="mb-4">
                             <Label>Title</Label>
-                            <Input type="text" name="title" value={input.title} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="text" name="title" value={input.title} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Description</Label>
-                            <Input type="text" name="description" value={input.description} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="text" name="description" value={input.description} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Requirements</Label>
-                            <Input type="text" name="requirements" value={input.requirements} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="text" name="requirements" value={input.requirements} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Education</Label>
-                            <Input type="text" name="education" value={input.education} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="text" name="education" value={input.education} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Salary</Label>
-                            <Input type="number" name="salary" value={input.salary} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="number" name="salary" value={input.salary} onChange={changeEventHandler} required />
                         </div>
-                        <div className="flex gap-2 mb-4">
+                        <div className="flex flex-col sm:flex-row gap-2 mb-4">
                             <div>
                                 <Label>Unit</Label>
                                 <Select value={input.salaryUnit} onValueChange={(value) => setInput(prev => ({ ...prev, salaryUnit: value }))}>
-                                    <SelectTrigger className="w-[100px]">
+                                    <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Unit" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -262,7 +263,7 @@ const UpdateJobForm = () => {
                             <div>
                                 <Label>Duration</Label>
                                 <Select value={input.salaryDuration} onValueChange={(value) => setInput(prev => ({ ...prev, salaryDuration: value }))}>
-                                    <SelectTrigger className="w-[100px]">
+                                    <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Duration" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -274,7 +275,7 @@ const UpdateJobForm = () => {
                         </div>
                         <div className="mb-4">
                             <Label>Location</Label>
-                            <Input type="text" name="location" value={input.location} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="text" name="location" value={input.location} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Job Type</Label>
@@ -293,15 +294,15 @@ const UpdateJobForm = () => {
                         </div>
                         <div className="mb-4">
                             <Label>Experience Level</Label>
-                            <Input type="text" name="experience" value={input.experience} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="text" name="experience" value={input.experience} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>No of Positions</Label>
-                            <Input type="number" name="position" value={input.position} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="number" name="position" value={input.position} onChange={changeEventHandler} required />
                         </div>
                         <div className="mb-4">
                             <Label>Expire Date</Label>
-                            <Input type="date" name="expiredDate" value={input.expiredDate} onChange={changeEventHandler} required />
+                            <Input className="w-full" type="date" name="expiredDate" value={input.expiredDate} onChange={changeEventHandler} required />
                         </div>
                         {
                             companies.length > 0 && (
